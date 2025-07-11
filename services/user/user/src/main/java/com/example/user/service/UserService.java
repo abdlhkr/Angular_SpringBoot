@@ -2,6 +2,8 @@ package com.example.user.service;
 
 import com.example.user.dto.GetUser.AddUser;
 import com.example.user.dto.GetUser.GetUser;
+import com.example.user.dto.GetUser.LoginUser;
+import com.example.user.dto.GetUser.Sil;
 import com.example.user.model.UserModel;
 
 import java.util.List;
@@ -12,4 +14,6 @@ public interface UserService {
     GetUser getUserById(Long id);
     List<GetUser> getAllUsers();
     GetUser deleteUser(Long id);
+    boolean login(LoginUser user);
+    void deleteAll(Sil idList);
 }

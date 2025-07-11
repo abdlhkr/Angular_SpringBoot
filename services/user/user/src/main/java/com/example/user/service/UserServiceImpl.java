@@ -2,12 +2,16 @@ package com.example.user.service;
 
 import com.example.user.dto.GetUser.AddUser;
 import com.example.user.dto.GetUser.GetUser;
+import com.example.user.dto.GetUser.LoginUser;
+import com.example.user.dto.GetUser.Sil;
 import com.example.user.model.UserModel;
 import com.example.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,9 +60,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public GetUser deleteUser(Long id) {
+    @DeleteMapping("/{id}")
+    public GetUser deleteUser(@PathVariable Long id) {
         UserModel user = userRepository.findById(id).orElse(null);
         userRepository.delete(user);
         return toGetUser(user);
+    }
+
+
+    public void deleteAll(@RequestBody Sil idList){
+        userRepository.deleteAllById(idList.getIdList());
+    }
+
+    public boolean login(LoginUser user) {
+        UserModel customer = userRepository.findByEmail(user.getEmail());
+        if (customer == null) {
+            return  false;
+        }else {
+            return user.getPassword().equals(customer.getPassword());
+        }
     }
 }
